@@ -45,6 +45,9 @@ public class OrderDTO implements Serializable {
         .longitude(this.longitude)
         .moment(Instant.now())
         .status(OrderStatus.PENDING)
+        .products(this.products.stream()
+            .map(productDTO -> Product.builder().id(productDTO.getId()).build())
+        .collect(Collectors.toSet()))
         .build();
   }
 }

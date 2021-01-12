@@ -20,13 +20,4 @@ public class ProductService {
     List<Product> products = productRepository.findAllByOrderByNameAsc();
     return products.stream().map(product -> new ProductDTO(product)).collect(Collectors.toList());
   }
-
-  /*
-  Essa função nao acessa realmente o banco, apenas faz uma referencia ao objeto para quando retornar
-  a função save, retornar o objeto referenciado, caso queira entender melhor, faça uma chamada do endpoint
-  POST /orders e veja o resultado, depois faça o mesmo na branch feature/withOutGetOne
-  */
-  public Product getReference(Long id) {
-    return productRepository.getOne(id);
-  }
 }

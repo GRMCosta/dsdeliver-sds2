@@ -27,9 +27,6 @@ public class OrderService {
   @Transactional
   public OrderDTO insert(OrderDTO orderDTO){
     Order order = orderDTO.toEntity();
-    order.setProducts(orderDTO.getProducts().stream().map(productDTO ->
-        productService.getReference(productDTO.getId())).collect(Collectors.toSet()));
-
     order = orderRepository.save(order);
     return new OrderDTO(order);
   }
