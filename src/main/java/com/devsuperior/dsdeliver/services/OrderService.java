@@ -15,11 +15,23 @@ public class OrderService {
 
   private OrderRepository orderRepository;
 
+  private ProductService productService;
+
   @Transactional(readOnly = true)
   //Por ser uma função apenas de leitura no banco, a anotação torna a busca mais rapida.
   public List<OrderDTO> findAll() {
     List<Order> orders = orderRepository.findOrdersWithProducts();
     return orders.stream().map(order -> new OrderDTO(order)).collect(Collectors.toList());
+  }
+
+  @Transactional
+  public OrderDTO insert(OrderDTO orderDTO){
+    Order order = orderDTO.toEntity();
+    order.setProducts(orderDTO.getProducts().stream().map(productDTO ->
+        productService.getReference(productDTO.getId())).collect(Collectors.toSet()));
+
+    order = orderRepository.save(order);
+    return new OrderDTO(order);
   }
 
 }
