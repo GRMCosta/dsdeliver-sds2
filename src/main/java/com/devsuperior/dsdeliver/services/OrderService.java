@@ -2,6 +2,7 @@ package com.devsuperior.dsdeliver.services;
 
 import com.devsuperior.dsdeliver.DTO.OrderDTO;
 import com.devsuperior.dsdeliver.entities.Order;
+import com.devsuperior.dsdeliver.entities.OrderStatus;
 import com.devsuperior.dsdeliver.repositories.OrderRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +32,15 @@ public class OrderService {
         productService.getReference(productDTO.getId())).collect(Collectors.toSet()));
 
     order = orderRepository.save(order);
+    return new OrderDTO(order);
+  }
+
+  @Transactional
+  public OrderDTO setDelivered(Long id){
+    Order order = orderRepository.getOne(id);
+    order.setStatus(OrderStatus.DELIVERED);
+    order = orderRepository.save(order);
+
     return new OrderDTO(order);
   }
 
